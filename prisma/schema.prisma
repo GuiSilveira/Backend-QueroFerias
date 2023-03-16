@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Employee {
+  id         Int         @id @default(autoincrement())
+  name       String
+  credential String
+  password   String
+  email      String
+  gmail      String
+  area       String
+  position   Position    @default(Employee)
+  role       String
+  contract   Contract    @default(CLT)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  idManager  Int?
+  manager    Employee?   @relation("ManagerEmployees", fields: [idManager], references: [id])
+  employees  Employee[]  @relation("ManagerEmployees")
+  schedules  Schedules[]
+}
+
+model Schedules {
+  id         Int      @id @default(autoincrement())
+  idEmployee Int
+  start       DateTime
+  end         DateTime
+  status   Status   @default(Pending)
+  employeeComment String?
+  managerComment  String?
+  anticipateSalary Boolean
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  employee   Employee @relation(fields: [idEmployee], references: [id])
+}
+
+enum Position {
+  Admin
+  Manager
+  Employee
+}
+
+enum Contract {
+  CLT
+  PJ
+}
+
+enum Status {
+  Pending
+  Approved
+  Rejected
+}
