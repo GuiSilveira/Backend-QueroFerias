@@ -8,13 +8,14 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
+// Deixar credential, email e gmail como unique
 model Employee {
   id         Int         @id @default(autoincrement())
   name       String
-  credential String
+  credential String      @unique
   password   String
-  email      String
-  gmail      String
+  email      String     @unique
+  gmail      String     @unique
   area       String
   position   Position    @default(Employee)
   role       String

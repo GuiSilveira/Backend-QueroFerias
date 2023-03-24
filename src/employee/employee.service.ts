@@ -3,6 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdatePutEmployeeDTO } from './DTO/update-put-employee.dto';
 import { UpdatePatchEmployeeDTO } from './DTO/update-patch-employee.dto';
+import * as bcrypt from 'bcrypt';
 
 // Um Service é a "cozinha", nele é onde os dados serão tratados e manipulados antes de serem enviados para o controller.
 @Injectable()
@@ -11,13 +12,12 @@ export class EmployeeService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateEmployeeDTO) {
+    const salt = await bcrypt.genSalt();
+
+    data.password = await bcrypt.hash(data.password, salt);
+
     return this.prisma.employee.create({
       data,
-      select: {
-        id: true,
-        name: true,
-        credential: true,
-      },
     });
   }
 
@@ -38,6 +38,10 @@ export class EmployeeService {
   async update(id: number, data: UpdatePutEmployeeDTO) {
     await this.exists(id);
 
+    const salt = await bcrypt.genSalt();
+
+    data.password = await bcrypt.hash(data.password, salt);
+
     return this.prisma.employee.update({
       where: {
         id,
@@ -49,22 +53,55 @@ export class EmployeeService {
   async updatePartial(id: number, data: UpdatePatchEmployeeDTO) {
     await this.exists(id);
 
+    const verifiedData: any = {};
+
+    if (data.area) {
+      verifiedData.area = data.area;
+    }
+
+    if (data.contract) {
+      verifiedData.contract = data.contract;
+    }
+
+    if (data.credential) {
+      verifiedData.credential = data.credential;
+    }
+
+    if (data.email) {
+      verifiedData.email = data.email;
+    }
+
+    if (data.idManager) {
+      verifiedData.idManager = Number(data.idManager);
+    }
+
+    if (data.name) {
+      verifiedData.name = data.name;
+    }
+
+    if (data.password) {
+      const salt = await bcrypt.genSalt();
+
+      verifiedData.password = await bcrypt.hash(data.password, salt);
+    }
+
+    if (data.gmail) {
+      verifiedData.gmail = data.gmail;
+    }
+
+    if (data.position) {
+      verifiedData.position = data.position;
+    }
+
+    if (data.role) {
+      verifiedData.role = data.role;
+    }
+
     return this.prisma.employee.update({
       where: {
         id,
       },
-      data: {
-        area: data.area,
-        contract: data.contract,
-        credential: data.credential,
-        email: data.email,
-        idManager: data.idManager ? Number(data.idManager) : undefined,
-        name: data.name,
-        password: data.password,
-        gmail: data.gmail,
-        position: data.position,
-        role: data.role,
-      },
+      data: verifiedData,
     });
   }
 

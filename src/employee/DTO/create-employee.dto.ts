@@ -4,27 +4,20 @@ import {
   IsStrongPassword,
   Contains,
   IsEnum,
+  IsNumberString,
 } from 'class-validator';
-
-enum Position {
-  Admin = 'Admin',
-  Manager = 'Manager',
-  Employee = 'Employee',
-}
-
-enum Contract {
-  CLT = 'CLT',
-  PJ = 'PJ',
-}
+import { Contract } from 'src/enums/contract.enum';
+import { Position } from 'src/enums/position.enum';
 
 export class CreateEmployeeDTO {
   @IsString()
   name: string;
 
-  @IsString()
+  @IsNumberString()
   credential: string;
 
   @IsEmail()
+  @Contains('@verdecard.com.br')
   email: string;
 
   @IsEmail()
