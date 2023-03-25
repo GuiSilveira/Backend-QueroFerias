@@ -118,7 +118,7 @@ export class EmployeeService {
   async listSchedulesByEmployee(id: number) {
     await this.exists(id);
 
-    return this.prisma.employee.findUnique({
+    const { schedules } = await this.prisma.employee.findUnique({
       where: {
         id,
       },
@@ -126,6 +126,8 @@ export class EmployeeService {
         schedules: true,
       },
     });
+
+    return schedules;
   }
 
   async listEmployeesByManager(id: number) {

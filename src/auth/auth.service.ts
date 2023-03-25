@@ -29,6 +29,7 @@ export class AuthService {
           name: user.name,
           manager: user.idManager,
           position: user.position,
+          contract: user.contract,
         },
         {
           expiresIn: '7 days',

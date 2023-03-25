@@ -8,6 +8,7 @@ export class ScheduleService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateScheduleDTO) {
+    // TODO: Verificar se o funcionário possui gerente antes de permitir a criação do agendamento.
     return this.prisma.schedules.create({
       data: {
         idEmployee: Number(data.idEmployee),
