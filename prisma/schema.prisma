@@ -31,8 +31,8 @@ model Employee {
 model Schedules {
   id         Int      @id @default(autoincrement())
   idEmployee Int
-  start       DateTime
-  end         DateTime
+  start       DateTime @db.Date
+  end         DateTime  @db.Date
   status   Status   @default(Pending)
   employeeComment String?
   managerComment  String?

@@ -1,3 +1,4 @@
+import { Position } from 'src/enums/position.enum';
 import { CreateEmployeeDTO } from './DTO/create-employee.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -23,6 +24,24 @@ export class EmployeeService {
 
   async list() {
     return this.prisma.employee.findMany();
+  }
+
+  async listAllManagers() {
+    const managers = await this.prisma.employee.findMany({
+      where: {
+        position: 'Manager',
+      },
+    });
+
+    const managersNameAndArea = managers.map((manager) => {
+      return {
+        id: manager.id,
+        name: manager.name,
+        area: manager.area,
+      };
+    });
+
+    return managersNameAndArea;
   }
 
   async show(id: number) {

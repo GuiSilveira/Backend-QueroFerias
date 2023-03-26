@@ -12,8 +12,8 @@ export class ScheduleService {
     return this.prisma.schedules.create({
       data: {
         idEmployee: Number(data.idEmployee),
-        start: data.start,
-        end: data.end,
+        start: data.start + 'T00:00:00.000Z',
+        end: data.end + 'T00:00:00.000Z',
         anticipateSalary: Boolean(data.anticipateSalary),
       },
       select: {

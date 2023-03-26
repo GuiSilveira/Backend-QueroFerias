@@ -30,6 +30,12 @@ export class EmployeeController {
     return this.employeeService.create(data);
   }
 
+  @Positions(Position.Employee, Position.Manager, Position.Admin)
+  @Get('managers')
+  async listAllManagers() {
+    return this.employeeService.listAllManagers();
+  }
+
   @Positions(Position.Admin)
   @Get()
   async list() {
