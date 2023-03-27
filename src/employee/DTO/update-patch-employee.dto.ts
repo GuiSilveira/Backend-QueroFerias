@@ -1,9 +1,9 @@
 import { CreateEmployeeDTO } from './create-employee.dto';
 import { PartialType } from '@nestjs/mapped-types';
-import { IsOptional, IsNumberString } from 'class-validator';
+import { IsOptional, IsNumber, IsEmpty } from 'class-validator';
 
 export class UpdatePatchEmployeeDTO extends PartialType(CreateEmployeeDTO) {
   @IsOptional()
-  @IsNumberString()
+  @IsNumber()
   idManager: number;
 }
