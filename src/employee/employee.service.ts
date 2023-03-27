@@ -38,6 +38,7 @@ export class EmployeeService {
         id: manager.id,
         name: manager.name,
         area: manager.area,
+        role: manager.role,
       };
     });
 
