@@ -95,6 +95,12 @@ export class EmployeeService {
       verifiedData.idManager = Number(data.idManager);
     }
 
+    if (data.idManager === null) {
+      verifiedData.manager = {
+        disconnect: true,
+      };
+    }
+
     if (data.name) {
       verifiedData.name = data.name;
     }
@@ -187,6 +193,17 @@ export class EmployeeService {
       },
       include: {
         schedules: true,
+      },
+    });
+  }
+
+  async listEmployeesWithoutManager() {
+    return this.prisma.employee.findMany({
+      where: {
+        idManager: null,
+        name: {
+          not: 'Admin',
+        },
       },
     });
   }

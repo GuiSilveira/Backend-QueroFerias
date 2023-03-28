@@ -1,6 +1,7 @@
 import {
   IsBoolean,
   IsBooleanString,
+  IsDate,
   IsDateString,
   IsEnum,
   IsNumberString,
@@ -18,10 +19,10 @@ export class CreateScheduleDTO {
   @IsNumberString()
   idEmployee: number;
 
-  @IsDateString()
+  @IsString()
   start: Date;
 
-  @IsDateString()
+  @IsString()
   end: Date;
 
   @IsOptional()
@@ -36,6 +37,7 @@ export class CreateScheduleDTO {
   @IsString()
   managerComment: string;
 
+  @IsOptional()
   @IsBooleanString()
   anticipateSalary: boolean;
 }

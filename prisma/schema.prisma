@@ -36,7 +36,7 @@ model Schedules {
   status   Status   @default(Pending)
   employeeComment String?
   managerComment  String?
-  anticipateSalary Boolean
+  anticipateSalary Boolean?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   employee   Employee @relation(fields: [idEmployee], references: [id])

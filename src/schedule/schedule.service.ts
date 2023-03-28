@@ -1,7 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateScheduleDTO } from './DTO/create-schedule.dto';
 import { UpdatePatchScheduleDTO } from './DTO/update-patch-schedule.dto';
+
+function dateIsValid(date) {
+  return !Number.isNaN(new Date(date).getTime());
+}
 
 @Injectable()
 export class ScheduleService {
@@ -9,12 +17,17 @@ export class ScheduleService {
 
   async create(data: CreateScheduleDTO) {
     // TODO: Verificar se o funcionário possui gerente antes de permitir a criação do agendamento.
+    if (!dateIsValid(data.start) || !dateIsValid(data.end)) {
+      throw new BadRequestException('Invalid date format.');
+    }
+
     return this.prisma.schedules.create({
       data: {
         idEmployee: Number(data.idEmployee),
-        start: data.start + 'T00:00:00.000Z',
-        end: data.end + 'T00:00:00.000Z',
-        anticipateSalary: Boolean(data.anticipateSalary),
+        start: data.start,
+        end: data.end,
+        anticipateSalary: data.anticipateSalary,
+        employeeComment: data.employeeComment,
       },
       select: {
         id: true,
@@ -57,5 +70,15 @@ export class ScheduleService {
     ) {
       throw new NotFoundException('Employee not found for this id.');
     }
+  }
+
+  async delete(id: number) {
+    await this.exists(id);
+
+    return this.prisma.schedules.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

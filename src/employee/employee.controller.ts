@@ -36,13 +36,19 @@ export class EmployeeController {
     return this.employeeService.listAllManagers();
   }
 
+  @Positions(Position.Admin, Position.Manager)
+  @Get('/manager/employees-without-manager')
+  async listEmployeesWithoutManager() {
+    return this.employeeService.listEmployeesWithoutManager();
+  }
+
   @Positions(Position.Admin)
   @Get()
   async list() {
     return this.employeeService.list();
   }
 
-  @Positions(Position.Admin)
+  @Positions(Position.Admin, Position.Manager, Position.Employee)
   @Get(':id')
   async show(@Param('id', ParseIntPipe) id) {
     return this.employeeService.show(id);
@@ -60,7 +66,7 @@ export class EmployeeController {
     return this.employeeService.listEmployeesByManager(id);
   }
 
-  @Positions(Position.Manager)
+  @Positions(Position.Admin, Position.Manager)
   @Get('manager/:id/schedules/all')
   async listEmployeeSchedulesByManager(@Param('id', ParseIntPipe) id) {
     return this.employeeService.listEmployeeSchedulesByManager(id);

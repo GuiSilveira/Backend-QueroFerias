@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -36,5 +37,10 @@ export class ScheduleController {
     @Param('id', ParseIntPipe) id,
   ) {
     return this.scheduleService.updatePartial(id, data);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id', ParseIntPipe) id) {
+    return this.scheduleService.delete(id);
   }
 }
