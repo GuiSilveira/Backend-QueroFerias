@@ -5,6 +5,9 @@ import {
   Contains,
   IsEnum,
   IsNumberString,
+  IsDateString,
+  IsOptional,
+  IsBoolean,
 } from 'class-validator';
 import { Contract } from 'src/enums/contract.enum';
 import { Position } from 'src/enums/position.enum';
@@ -44,4 +47,11 @@ export class CreateEmployeeDTO {
 
   @IsEnum(Contract)
   contract: Contract;
+
+  @IsDateString()
+  contractDate: string;
+
+  @IsOptional()
+  @IsBoolean()
+  vacationStatus: boolean;
 }

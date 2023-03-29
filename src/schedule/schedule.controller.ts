@@ -31,6 +31,11 @@ export class ScheduleController {
     return this.scheduleService.show(id);
   }
 
+  @Get('employee/:id')
+  async listApprovedSchedulesByEmployee(@Param('id', ParseIntPipe) id) {
+    return this.scheduleService.showApprovedSchedulesByEmployee(id);
+  }
+
   @Patch(':id')
   async updatePartial(
     @Body() data: UpdatePatchScheduleDTO,

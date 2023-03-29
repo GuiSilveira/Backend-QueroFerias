@@ -123,6 +123,10 @@ export class EmployeeService {
       verifiedData.role = data.role;
     }
 
+    if (data.contractDate) {
+      verifiedData.contractDate = data.contractDate;
+    }
+
     return this.prisma.employee.update({
       where: {
         id,
@@ -206,6 +210,25 @@ export class EmployeeService {
         },
       },
     });
+  }
+
+  async listPendingSchedulesByEmployee(id: number) {
+    await this.exists(id);
+
+    const { schedules } = await this.prisma.employee.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        schedules: {
+          where: {
+            status: 'Pending',
+          },
+        },
+      },
+    });
+
+    return schedules;
   }
 
   async exists(id: number) {

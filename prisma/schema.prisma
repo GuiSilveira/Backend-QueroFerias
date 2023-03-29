@@ -20,6 +20,8 @@ model Employee {
   position   Position    @default(Employee)
   role       String
   contract   Contract    @default(CLT)
+  contractDate DateTime?  @db.Date
+  vacationStatus Boolean @default(false)
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   idManager  Int?

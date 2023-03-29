@@ -1,7 +1,5 @@
 import {
   IsBoolean,
-  IsBooleanString,
-  IsDate,
   IsDateString,
   IsEnum,
   IsNumberString,
@@ -17,13 +15,13 @@ enum Status {
 
 export class CreateScheduleDTO {
   @IsNumberString()
-  idEmployee: number;
+  idEmployee: string;
 
   @IsString()
-  start: Date;
+  start: string;
 
   @IsString()
-  end: Date;
+  end: string;
 
   @IsOptional()
   @IsEnum(Status)
@@ -38,6 +36,12 @@ export class CreateScheduleDTO {
   managerComment: string;
 
   @IsOptional()
-  @IsBooleanString()
+  @IsBoolean()
   anticipateSalary: boolean;
+
+  @IsNumberString()
+  vacationDays: string;
+
+  @IsDateString()
+  employeeContractDate: string;
 }

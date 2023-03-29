@@ -60,6 +60,12 @@ export class EmployeeController {
     return this.employeeService.listSchedulesByEmployee(id);
   }
 
+  @Positions(Position.Admin, Position.Manager, Position.Employee)
+  @Get(':id/schedules/pending')
+  async listPendingSchedulesByEmployee(@Param('id', ParseIntPipe) id) {
+    return this.employeeService.listPendingSchedulesByEmployee(id);
+  }
+
   @Positions(Position.Manager)
   @Get('manager/:id')
   async listEmployeesByManager(@Param('id', ParseIntPipe) id) {
