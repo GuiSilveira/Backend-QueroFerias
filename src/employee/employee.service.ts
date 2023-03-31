@@ -127,6 +127,14 @@ export class EmployeeService {
       verifiedData.contractDate = data.contractDate;
     }
 
+    if (data.vacationStatus === false) {
+      verifiedData.vacationStatus = data.vacationStatus;
+    }
+
+    if (data.vacationStatus === true) {
+      verifiedData.vacationStatus = data.vacationStatus;
+    }
+
     return this.prisma.employee.update({
       where: {
         id,
@@ -187,6 +195,35 @@ export class EmployeeService {
         },
       },
     });
+  }
+
+  async listEmployeesApprovedSchedulesByManager(id: number) {
+    await this.exists(id);
+
+    const data = await this.prisma.employee.findMany({
+      where: {
+        idManager: id,
+      },
+      include: {
+        schedules: {
+          where: {
+            status: 'Approved',
+          },
+        },
+      },
+    });
+
+    const filteredEmployees = data.filter((employee) => {
+      return employee.schedules.length > 0;
+    });
+
+    const schedules = filteredEmployees.map((employee) => {
+      return employee.schedules.reduce((prev, current) =>
+        prev.createdAt > current.createdAt ? prev : current,
+      );
+    });
+
+    return schedules;
   }
 
   async listEmployeeSchedulesByManager(id: number) {

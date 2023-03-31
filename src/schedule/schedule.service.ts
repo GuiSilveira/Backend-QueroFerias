@@ -95,13 +95,10 @@ export class ScheduleService {
       );
     }
 
-    if (
-      saldoFeriasUtilizado === 15 &&
-      approvedSchedulesInsidePeriod.length !== 1
-    ) {
-      if (newRequestVacationDays !== 15) {
+    if (saldoFeriasUtilizado === 10) {
+      if (newRequestVacationDays < 15) {
         throw new BadRequestException(
-          'The employee needs to request 15 vacation days to complete the period of 30 days of vacation.',
+          'The employee needs to request 15 or 20 vacation days to complete the period of 30 days of vacation.',
         );
       }
     }

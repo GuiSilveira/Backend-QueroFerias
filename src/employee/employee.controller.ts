@@ -66,7 +66,7 @@ export class EmployeeController {
     return this.employeeService.listPendingSchedulesByEmployee(id);
   }
 
-  @Positions(Position.Manager)
+  @Positions(Position.Admin, Position.Manager)
   @Get('manager/:id')
   async listEmployeesByManager(@Param('id', ParseIntPipe) id) {
     return this.employeeService.listEmployeesByManager(id);
@@ -78,7 +78,7 @@ export class EmployeeController {
     return this.employeeService.listEmployeeSchedulesByManager(id);
   }
 
-  @Positions(Position.Manager)
+  @Positions(Position.Admin, Position.Manager)
   @Get('manager/:id/schedules/:status')
   async listSelectedEmployeeSchedulesByManager(
     @Param('id', ParseIntPipe) id,
@@ -88,6 +88,12 @@ export class EmployeeController {
       id,
       status,
     );
+  }
+
+  @Positions(Position.Admin, Position.Manager)
+  @Get('manager/:id/all_approved/schedules')
+  async listEmployeesApprovedSchedulesByManager(@Param('id', ParseIntPipe) id) {
+    return this.employeeService.listEmployeesApprovedSchedulesByManager(id);
   }
 
   @Positions(Position.Admin)
