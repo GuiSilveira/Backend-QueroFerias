@@ -7,10 +7,10 @@ import {
   IsNumberString,
   IsDateString,
   IsOptional,
-  IsBoolean,
 } from 'class-validator';
 import { Contract } from 'src/enums/contract.enum';
 import { Position } from 'src/enums/position.enum';
+import { EmployeeVacationStatus } from 'src/enums/employeeVacationStatus.enum';
 
 export class CreateEmployeeDTO {
   @IsString()
@@ -52,6 +52,6 @@ export class CreateEmployeeDTO {
   contractDate: string;
 
   @IsOptional()
-  @IsBoolean()
-  vacationStatus: boolean;
+  @IsEnum(EmployeeVacationStatus)
+  vacationStatus: EmployeeVacationStatus;
 }

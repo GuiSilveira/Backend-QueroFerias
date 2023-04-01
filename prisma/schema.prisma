@@ -21,7 +21,7 @@ model Employee {
   role       String
   contract   Contract    @default(CLT)
   contractDate DateTime?  @db.Date
-  vacationStatus Boolean @default(false)
+  vacationStatus EmployeeVacationStatus @default(Working)
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   idManager  Int?
@@ -59,4 +59,10 @@ enum Status {
   Pending
   Approved
   Rejected
+}
+
+enum EmployeeVacationStatus {
+  Working
+  Vacation
+  Delayed
 }

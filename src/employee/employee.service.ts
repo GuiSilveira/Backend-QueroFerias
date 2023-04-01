@@ -1,4 +1,3 @@
-import { Position } from 'src/enums/position.enum';
 import { CreateEmployeeDTO } from './DTO/create-employee.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -18,7 +17,18 @@ export class EmployeeService {
     data.password = await bcrypt.hash(data.password, salt);
 
     return this.prisma.employee.create({
-      data,
+      data: {
+        area: data.area,
+        contract: data.contract,
+        credential: data.credential,
+        email: data.email,
+        name: data.name,
+        password: data.password,
+        gmail: data.gmail,
+        position: data.position,
+        role: data.role,
+        contractDate: data.contractDate,
+      },
     });
   }
 
@@ -66,7 +76,18 @@ export class EmployeeService {
       where: {
         id,
       },
-      data,
+      data: {
+        area: data.area,
+        contract: data.contract,
+        credential: data.credential,
+        email: data.email,
+        name: data.name,
+        password: data.password,
+        gmail: data.gmail,
+        position: data.position,
+        role: data.role,
+        contractDate: data.contractDate,
+      },
     });
   }
 
@@ -127,11 +148,7 @@ export class EmployeeService {
       verifiedData.contractDate = data.contractDate;
     }
 
-    if (data.vacationStatus === false) {
-      verifiedData.vacationStatus = data.vacationStatus;
-    }
-
-    if (data.vacationStatus === true) {
+    if (data.vacationStatus) {
       verifiedData.vacationStatus = data.vacationStatus;
     }
 
@@ -227,6 +244,18 @@ export class EmployeeService {
   }
 
   async listEmployeeSchedulesByManager(id: number) {
+    await this.exists(id);
+    return this.prisma.employee.findMany({
+      where: {
+        idManager: id,
+      },
+      include: {
+        schedules: true,
+      },
+    });
+  }
+
+  async listFilteredEmployeeSchedulesByManager(id: number) {
     await this.exists(id);
     return this.prisma.employee.findMany({
       where: {
