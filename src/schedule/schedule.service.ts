@@ -30,7 +30,6 @@ export class ScheduleService {
       throw new BadRequestException('Start date must be after today.');
     }
 
-    console.log('antecipa salario: ', data.anticipateSalary);
     const newRequestVacationDays = Number(data.vacationDays);
     const saldoFerias = 30;
     let saldoFeriasUtilizado = 0;
@@ -110,7 +109,9 @@ export class ScheduleService {
       },
     );
 
-    if (scheduleWithAnticipateSalary) {
+    console.log('Antecipação do salario: ', data.anticipateSalary);
+
+    if (data.anticipateSalary === true && scheduleWithAnticipateSalary) {
       throw new BadRequestException(
         'The employee already has a vacation request with the salary advance option marked as yes.',
       );
@@ -121,9 +122,7 @@ export class ScheduleService {
         idEmployee: Number(data.idEmployee),
         start: data.start,
         end: data.end,
-        anticipateSalary: scheduleWithAnticipateSalary
-          ? false
-          : data.anticipateSalary,
+        anticipateSalary: data.anticipateSalary,
         employeeComment: data.employeeComment,
       },
       select: {
